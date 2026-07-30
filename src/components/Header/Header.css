@@ -1,0 +1,31 @@
+.site-header {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border-primary);
+  background-color: var(--bg-header);
+}
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--accent-purple);
+  font-size: 1.65rem;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.site-logo span:first-child {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    padding: 1rem;
+  }
+
+  .site-logo {
+    font-size: 1.35rem;
+  }
+}
