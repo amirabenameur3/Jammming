@@ -1,6 +1,6 @@
 import "./Track.css";
 
-function Track({ name, artist, album }) {
+function Track({ name, artist, album, isRemoval }) {
   return (
     <article className="track">
       <div className="track-info">
@@ -11,9 +11,13 @@ function Track({ name, artist, album }) {
       <button
         className="track-action"
         type="button"
-        aria-label={`Add ${name} to playlist`}
+        aria-label={
+          isRemoval
+            ? `Remove ${name} from playlist`
+            : `Add ${name} to playlist`
+        }
       >
-        +
+        {isRemoval ? "-" : "+"}
       </button>
     </article>
   );

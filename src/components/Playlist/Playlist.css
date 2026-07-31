@@ -47,7 +47,7 @@
   color: var(--text-primary);
 }
 
-.playlist-panel button {
+.save-button {
   align-self: flex-end;
   margin-top: auto;
   padding: 0.9rem 1.5rem;
@@ -58,7 +58,7 @@
   font-weight: 800;
 }
 
-.playlist-panel button:disabled {
+.save-button:disabled {
   cursor: not-allowed;
   opacity: 0.55;
   filter: saturate(0.6);
