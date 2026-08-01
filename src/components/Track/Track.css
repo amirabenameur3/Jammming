@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-
   padding: 1rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -26,14 +25,37 @@
 
 .track-action {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  border: none;
+  width: 1.8rem;
+  height: 1.8rem;
+
+  border: 0;
+  border-radius: 50%;
   background: transparent;
-  color: #ffffff;
-  font-size: 1.5rem;
+  color: var(--text-primary);
+  font-size: 1.4rem;
+  font-weight: 700;
   cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .track-action:hover {
-  color: #1db954;
+  color: var(--accent-green);
+  background-color: rgba(74, 222, 128, 0.1);
+  transform: scale(1.08);
+}
+
+.track-action:disabled {
+  color: var(--accent-green);
+  background-color: rgba(74, 222, 128, 0.12);
+  cursor: default;
+  opacity: 1;
+  transform: none;
 }

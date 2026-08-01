@@ -1,36 +1,29 @@
 import TrackList from "../TrackList/TrackList";
 import "./SearchResults.css";
 
-function SearchResults() {
-   const tracks = [
-    {
-      id: 1,
-      name: "Blinding Lights",
-      artist: "The Weeknd",
-      album: "After Hours",
-    },
-    {
-      id: 2,
-      name: "Flowers",
-      artist: "Miley Cyrus",
-      album: "Endless Summer Vacation",
-    },
-    {
-      id: 3,
-      name: "As It Was",
-      artist: "Harry Styles",
-      album: "Harry's House",
-    },
-  ];
-
+function SearchResults({ tracks, onAdd, hasSearched, playlistTracks }) {
   return (
     <section className="results-panel" aria-labelledby="results-heading">
       <div className="panel-header">
         <h2 id="results-heading">Search Results</h2>
-        <span>{tracks.length} tracks</span>
+        <span>
+          {tracks.length} {tracks.length === 1 ? "track" : "tracks"}
+        </span>
       </div>
 
-      <TrackList tracks={tracks} />
+      {tracks.length > 0 ? (
+        <TrackList 
+          tracks={tracks}
+          playlistTracks={playlistTracks} 
+          onAdd={onAdd}
+        />
+      ) : (
+        <p className="empty-message">
+          {hasSearched
+            ? "No tracks found. Try another song, artist, or album."
+            : "Search for music to see matching tracks."}
+        </p>
+      )}
     </section>
   );
 }
