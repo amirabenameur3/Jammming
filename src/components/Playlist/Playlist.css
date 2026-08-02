@@ -93,3 +93,21 @@
   opacity: 0.55;
   filter: saturate(0.6);
 }
+
+.save-message,
+.save-error {
+  margin: 1.5rem 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+}
+
+.save-message {
+  background-color: rgba(74, 222, 128, 0.12);
+  color: var(--accent-green);
+}
+
+.save-error {
+  background-color: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+}

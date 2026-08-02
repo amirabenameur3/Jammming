@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { redirectToSpotifyLogin, exchangeCodeForToken, searchSpotify, createPlaylist, addTracksToPlaylist, } from "./services/spotify.js";
 import Header from "./components/Header/Header";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchResults from "./components/SearchResults/SearchResults";
@@ -6,50 +7,34 @@ import Playlist from "./components/Playlist/Playlist";
 import Footer from "./components/Footer/Footer";
 import "./App.css";
 
-const allTracks = [
-  {
-    id: 1,
-    name: "Blinding Lights",
-    artist: "The Weeknd",
-    album: "After Hours",
-  },
-  {
-    id: 2,
-    name: "Flowers",
-    artist: "Miley Cyrus",
-    album: "Endless Summer Vacation",
-  },
-  {
-    id: 3,
-    name: "As It Was",
-    artist: "Harry Styles",
-    album: "Harry's House",
-  },
-];
-
 function App() {
-  const [searchResults, setSearchResults] = useState(allTracks);
+  const [searchResults, setSearchResults] = useState([]);
 
-  const [playlistTracks, setPlaylistTracks] = useState([
-    {
-      id: 4,
-      name: "Levitating",
-      artist: "Dua Lipa",
-      album: "Future Nostalgia",
-    },
-    {
-      id: 5,
-      name: "Watermelon Sugar",
-      artist: "Harry Styles",
-      album: "Fine Line",
-    },
-  ]);
+  const [playlistTracks, setPlaylistTracks] = useState([]);
 
   const [playlistName, setPlaylistName] = useState("My Awesome Playlist");
 
   const [searchTerm, setSearchTerm] = useState("");
 
   const [hasSearched, setHasSearched] = useState(false);
+
+  const [isSaving, setIsSaving] = useState(false);
+  
+  const [saveMessage, setSaveMessage] = useState("");
+  
+  const [saveError, setSaveError] = useState("");
+
+  useEffect(() => {
+    async function authenticate() {
+      try {
+        await exchangeCodeForToken();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+    authenticate();
+  }, []);
 
   function addTrack(track) {
     setPlaylistTracks((prevTracks) => {
@@ -63,9 +48,6 @@ function App() {
 
       return [...prevTracks, track];
     });
-
-    setSearchTerm("");
-    setSearchResults(allTracks);
   }
 
   function removeTrack(track) {
@@ -76,35 +58,81 @@ function App() {
     );
   }
 
-  function savePlaylist() {
-    console.log("Playlist name:", playlistName);
-    console.log("Playlist tracks:", playlistTracks);
+  async function savePlaylist() {
+  const cleanPlaylistName = playlistName.trim();
+
+  if (!cleanPlaylistName || playlistTracks.length === 0 || isSaving) {
+    return;
   }
 
-  function performSearch() {
-    const query = searchTerm.trim().toLowerCase();
+  setIsSaving(true);
+  setSaveMessage("");
+  setSaveError("");
 
-    setHasSearched(true);
+  try {
+    const playlist = await createPlaylist(cleanPlaylistName);
 
-    if (!query) {
-      setSearchResults(allTracks);
-      return;
+    const trackUris = playlistTracks
+      .map((track) => track.uri)
+      .filter(Boolean);
+
+    if (trackUris.length === 0) {
+      throw new Error("No valid Spotify tracks were found.");
     }
 
-    const filteredTracks = allTracks.filter((track) => {
-      return (
-        track.name.toLowerCase().includes(query) ||
-        track.artist.toLowerCase().includes(query) ||
-        track.album.toLowerCase().includes(query)
-      );
-    });
+    await addTracksToPlaylist(playlist.id, trackUris);
 
-    setSearchResults(filteredTracks);
+    setSaveMessage(
+      "🎉 Your playlist has been saved to Spotify."
+    );
+
+    setTimeout(() => {
+      setSaveMessage("");
+    }, 4000);
+
+    setPlaylistName("My Awesome Playlist");
+    setPlaylistTracks([]);
+    setSearchResults([]);
+    setSearchTerm("");
+
+  } catch (error) {
+    console.error("Could not save playlist:", error);
+
+    setSaveError(
+      error.message || "The playlist could not be saved. Please try again."
+    );
+  } finally {
+    setIsSaving(false);
+  }
+}
+
+  async function performSearch() {
+    const query = searchTerm.trim();
+    
+    if (!query) {
+      setSearchResults([]);
+      return;
+    }
+    
+    try {
+      const tracks = await searchSpotify(query);
+      setSearchResults(tracks);
+    } catch (error) {
+      console.error(error);
+      setSearchResults([]);
+    }
   }
 
   return (
     <div className="app">
       <Header />
+
+      <button
+        type="button"
+        onClick={redirectToSpotifyLogin}
+      >
+        Connect Spotify
+      </button>
 
       <main>
         <SearchBar 
@@ -126,6 +154,9 @@ function App() {
             onNameChange={setPlaylistName}
             onRemove={removeTrack}
             onSave={savePlaylist}
+            isSaving={isSaving}
+            saveMessage={saveMessage}
+            saveError={saveError}
           />
         </div>
       </main>
