@@ -122,6 +122,10 @@ function App() {
       console.error("Spotify search failed:", error);
       setSearchResults([]);
       setHasSearched(true);
+      showToast(
+        error.message || "Could not search Spotify.",
+        "error"
+      );
     } finally {
       setIsSearching(false);
     }
