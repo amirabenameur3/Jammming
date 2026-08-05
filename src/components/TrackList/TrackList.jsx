@@ -16,6 +16,9 @@ function TrackList({ tracks, playlistTracks = [], isRemoval = false, onAdd, onRe
             name={track.name}
             artist={track.artist}
             album={track.album}
+            image={track.image}
+            duration={track.duration}
+            spotifyUrl={track.spotifyUrl}
             isRemoval={isRemoval}
             isAdded={isAdded}
             onAdd={onAdd}

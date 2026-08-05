@@ -131,42 +131,60 @@ async function searchSpotify(searchTerm) {
     throw new Error("Spotify access token not found.");
   }
 
-  const response = await fetch(
-    `https://api.spotify.com/v1/search?q=${encodeURIComponent(
-      searchTerm
-    )}&type=track&limit=10`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  const controller = new AbortController();
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    
-    console.error("Spotify search error:", errorData);
-    
-    throw new Error(
-        errorData.error?.message || "Could not search Spotify."
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, 10000);
+
+  try {
+    const response = await fetch(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+            searchTerm
+        )}&type=track&limit=10`,
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            signal: controller.signal,
+        }
     );
-   }
+    
+    if (!response.ok) {
+        const errorData = await response.json();
+        
+        console.error("Spotify search error:", errorData);
+        
+        throw new Error(
+            errorData.error?.message || "Could not search Spotify."
+        );
+    }
+    
+    const data = await response.json();
+    
+    return data.tracks.items.map((track) => ({
+        id: track.id,
+        name: track.name,
+        artist: track.artists.map((artist) => artist.name).join(", "),
+        album: track.album.name,
+        uri: track.uri,
+        image: track.album.images[1]?.url
+            || track.album.images[0]?.url
+            || "",
+        duration: track.duration_ms,
+        spotifyUrl: track.external_urls.spotify,
+    }));
+  } catch(error) {
+    if (error.name === "AbortError") {
+        throw new Error(
+            "The Spotify search took too long. Please try again."
+        );
+    }
 
-  const data = await response.json();
-
-  return data.tracks.items.map((track) => ({
-    id: track.id,
-    name: track.name,
-    artist: track.artists
-      .map((artist) => artist.name)
-      .join(", "),
-    album: track.album.name,
-    uri: track.uri,
-    image: track.album.images[1]?.url
-      || track.album.images[0]?.url
-      || "",
-    spotifyUrl: track.external_urls.spotify,
-  }));
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 async function getCurrentUser() {
@@ -244,7 +262,7 @@ async function addTracksToPlaylist(playlistId, trackUris) {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+        body: JSON.stringify({
         uris: trackUris,
       }),
     }

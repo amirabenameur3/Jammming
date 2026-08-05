@@ -7,7 +7,44 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.track-image-link {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 8px;
+  line-height: 0;
+}
+
+.track-image-link:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+}
+
+.track-image {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.track-image-link:hover .track-image {
+  opacity: 0.85;
+  transform: scale(1.04);
+}
+
+.track-duration {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
 .track-info {
+  flex: 1;
   min-width: 0;
 }
 
@@ -59,3 +96,4 @@
   opacity: 1;
   transform: none;
 }
+

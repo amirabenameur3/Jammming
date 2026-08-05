@@ -18,6 +18,8 @@ function App() {
 
   const [hasSearched, setHasSearched] = useState(false);
 
+  const [isSearching, setIsSearching] = useState(false);
+
   const [isSaving, setIsSaving] = useState(false);
   
   const [saveMessage, setSaveMessage] = useState("");
@@ -109,17 +111,22 @@ function App() {
   async function performSearch() {
     const query = searchTerm.trim();
     
-    if (!query) {
-      setSearchResults([]);
+    if (!query || isSearching) {
       return;
     }
+
+    setIsSearching(true);
     
     try {
       const tracks = await searchSpotify(query);
       setSearchResults(tracks);
+      setHasSearched(true);
     } catch (error) {
-      console.error(error);
+      console.error("Spotify search failed:", error);
       setSearchResults([]);
+      setHasSearched(true);
+    } finally {
+      setIsSearching(false);
     }
   }
 
@@ -139,6 +146,7 @@ function App() {
           searchTerm={searchTerm}
           onSearchTermChange={setSearchTerm}
           onSearch={performSearch}
+          isSearching={isSearching}
         />
 
         <div className="workspace">
@@ -147,6 +155,7 @@ function App() {
             onAdd={addTrack}
             hasSearched={hasSearched}
             playlistTracks={playlistTracks}
+            isSearching={isSearching}
           />
           <Playlist 
             tracks={playlistTracks} 

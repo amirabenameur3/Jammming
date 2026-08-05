@@ -23,7 +23,45 @@
   color: var(--text-secondary);
 }
 
+.loading-message {
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
 .empty-message {
   margin-top: 1.5rem;
   color: var(--text-secondary);
+}
+
+.results-panel {
+  display: flex;
+  flex-direction: column;
+  height: clamp(420px, 80vh, 700px);
+}
+
+.results-panel .track-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.results-panel .track-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.results-panel .track-list::-webkit-scrollbar-track {
+  background: var(--bg-panel);
+  border-radius: var(--radius-md);
+}
+
+.results-panel .track-list::-webkit-scrollbar-thumb {
+  background-color: var(--border-primary);
+  border: 2px solid var(--bg-panel);
+  border-radius: var(--radius-md);
+}
+
+.results-panel .track-list::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-secondary);
 }

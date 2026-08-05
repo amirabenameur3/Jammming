@@ -1,6 +1,6 @@
 import "./SearchBar.css";
 
-function SearchBar({ searchTerm, onSearchTermChange, onSearch }) {
+function SearchBar({ searchTerm, onSearchTermChange, onSearch, isSearching }) {
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -23,7 +23,12 @@ function SearchBar({ searchTerm, onSearchTermChange, onSearch }) {
             onChange={(event) => onSearchTermChange(event.target.value)}
           />
 
-          <button type="submit">Search</button>
+          <button 
+            type="submit"
+            disabled={isSearching}
+            >
+              {isSearching ? "Searching..." : "Search"}
+            </button>
         </div>
       </form>
     </section>

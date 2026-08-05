@@ -1,7 +1,7 @@
 import TrackList from "../TrackList/TrackList";
 import "./SearchResults.css";
 
-function SearchResults({ tracks, onAdd, hasSearched, playlistTracks }) {
+function SearchResults({ tracks, onAdd, hasSearched, playlistTracks, isSearching }) {
   return (
     <section className="results-panel" aria-labelledby="results-heading">
       <div className="panel-header">
@@ -11,10 +11,14 @@ function SearchResults({ tracks, onAdd, hasSearched, playlistTracks }) {
         </span>
       </div>
 
-      {tracks.length > 0 ? (
-        <TrackList 
+      {isSearching ? (
+        <p className="loading-message">
+          Searching Spotify...
+        </p>
+      ) : tracks.length > 0 ? (
+        <TrackList
           tracks={tracks}
-          playlistTracks={playlistTracks} 
+          playlistTracks={playlistTracks}
           onAdd={onAdd}
         />
       ) : (

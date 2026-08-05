@@ -1,6 +1,7 @@
 import "./Track.css";
 
-function Track({ track, name, artist, album, isRemoval, isAdded, onAdd, onRemove }) {
+function Track({ track, name, artist, album, image, duration, spotifyUrl, isRemoval, isAdded, onAdd, onRemove }) {
+
   function handleClick() {
     if (isRemoval) {
       onRemove(track);
@@ -11,13 +12,42 @@ function Track({ track, name, artist, album, isRemoval, isAdded, onAdd, onRemove
       onAdd(track);
     }
   }
+
+  function formatDuration(milliseconds) {
+    if (typeof milliseconds !== "number") {
+      return "--:--";
+    
+    }
+    const minutes = Math.floor(milliseconds / 60000);
+    const seconds = Math.floor((milliseconds % 60000) / 1000);
+    
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  }
   
   return (
     <article className="track">
+      <a
+        className="track-image-link"
+        href={spotifyUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Open ${name} by ${artist} on Spotify`}
+      >
+        <img 
+          className="track-image"
+          src={image}
+          alt={`${album} album cover`}
+        />
+      </a>
+      
       <div className="track-info">
         <h3>{name}</h3>
         <p>{artist} | {album}</p>
       </div>
+
+      <span className="track-duration">
+        {formatDuration(duration)}
+      </span>
 
       <button
         className="track-action"
