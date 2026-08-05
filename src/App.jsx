@@ -4,6 +4,7 @@ import Header from "./components/Header/Header";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchResults from "./components/SearchResults/SearchResults";
 import Playlist from "./components/Playlist/Playlist";
+import Toast from "./components/Toast/Toast";
 import Footer from "./components/Footer/Footer";
 import "./App.css";
 
@@ -22,9 +23,7 @@ function App() {
 
   const [isSaving, setIsSaving] = useState(false);
   
-  const [saveMessage, setSaveMessage] = useState("");
-  
-  const [saveError, setSaveError] = useState("");
+  const [toast, setToast] = useState({message: "", type: "success",});
 
   useEffect(() => {
     async function authenticate() {
@@ -68,8 +67,6 @@ function App() {
   }
 
   setIsSaving(true);
-  setSaveMessage("");
-  setSaveError("");
 
   try {
     const playlist = await createPlaylist(cleanPlaylistName);
@@ -84,24 +81,24 @@ function App() {
 
     await addTracksToPlaylist(playlist.id, trackUris);
 
-    setSaveMessage(
-      "🎉 Your playlist has been saved to Spotify."
+    showToast(
+      "Your playlist has been saved to Spotify.",
+      "success"
     );
-
-    setTimeout(() => {
-      setSaveMessage("");
-    }, 4000);
 
     setPlaylistName("My Awesome Playlist");
     setPlaylistTracks([]);
     setSearchResults([]);
     setSearchTerm("");
+    setHasSearched(false);
 
   } catch (error) {
     console.error("Could not save playlist:", error);
 
-    setSaveError(
-      error.message || "The playlist could not be saved. Please try again."
+    showToast(
+      error.message ||
+        "The playlist could not be saved. Please try again.",
+      "error"
     );
   } finally {
     setIsSaving(false);
@@ -130,8 +127,30 @@ function App() {
     }
   }
 
+  function showToast(message, type = "success") {
+    setToast({ message, type });
+    
+    setTimeout(() => {
+      setToast({
+        message: "",
+        type: "success",
+      });
+    }, 4000);
+  }
+
   return (
     <div className="app">
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        onClose={() =>
+          setToast({
+            message: "",
+            type: "success",
+          })
+        }
+      />
+
       <Header />
 
       <button
@@ -164,8 +183,6 @@ function App() {
             onRemove={removeTrack}
             onSave={savePlaylist}
             isSaving={isSaving}
-            saveMessage={saveMessage}
-            saveError={saveError}
           />
         </div>
       </main>

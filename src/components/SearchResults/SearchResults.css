@@ -23,12 +23,6 @@
   color: var(--text-secondary);
 }
 
-.loading-message {
-  margin-top: 1.5rem;
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
 .empty-message {
   margin-top: 1.5rem;
   color: var(--text-secondary);

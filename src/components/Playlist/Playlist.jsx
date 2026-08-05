@@ -1,7 +1,7 @@
 import TrackList from "../TrackList/TrackList";
 import "./Playlist.css";
 
-function Playlist({ tracks, playlistName, onNameChange, onRemove, onSave, isSaving, saveMessage, saveError }) {
+function Playlist({ tracks, playlistName, onNameChange, onRemove, onSave, isSaving }) {
   return (
     <section className="playlist-panel" aria-labelledby="playlist-heading">
       <div className="panel-header">
@@ -28,24 +28,10 @@ function Playlist({ tracks, playlistName, onNameChange, onRemove, onSave, isSavi
           onRemove={onRemove}
         />
       ) : (
-        !saveMessage && (
           <p className="empty-message">
             Add tracks from the search results to build your playlist.
           </p>
-        )
-      )}
-
-      {saveMessage && (
-        <p className="save-message" role="status">
-          {saveMessage}
-        </p>
-      )}
-      
-      {saveError && (
-        <p className="save-error" role="alert">
-          {saveError}
-        </p>
-      )}
+        )}
 
       <button
         className="save-button"

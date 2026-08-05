@@ -1,4 +1,5 @@
 import TrackList from "../TrackList/TrackList";
+import SearchSkeleton from "../SearchSkeleton/SearchSkeleton";
 import "./SearchResults.css";
 
 function SearchResults({ tracks, onAdd, hasSearched, playlistTracks, isSearching }) {
@@ -12,9 +13,7 @@ function SearchResults({ tracks, onAdd, hasSearched, playlistTracks, isSearching
       </div>
 
       {isSearching ? (
-        <p className="loading-message">
-          Searching Spotify...
-        </p>
+        <SearchSkeleton />
       ) : tracks.length > 0 ? (
         <TrackList
           tracks={tracks}
