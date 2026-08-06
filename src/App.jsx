@@ -9,6 +9,10 @@ import Footer from "./components/Footer/Footer";
 import "./App.css";
 
 function App() {
+  const [isSpotifyConnected, setIsSpotifyConnected] = useState(() => {
+    return Boolean(localStorage.getItem("spotify_access_token"));
+  });
+
   const [searchResults, setSearchResults] = useState([]);
 
   const [playlistTracks, setPlaylistTracks] = useState([]);
@@ -26,16 +30,76 @@ function App() {
   const [toast, setToast] = useState({message: "", type: "success",});
 
   useEffect(() => {
-    async function authenticate() {
+    async function authenticateSpotify() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      
       try {
-        await exchangeCodeForToken();
+        if (code) {
+          await exchangeCodeForToken(code);
+          
+          setIsSpotifyConnected(true);
+          
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
+          
+          setToast({
+            message: "Spotify connected successfully.",
+            type: "success",
+          });
+          
+          return;
+        }
+        
+        const accessToken = localStorage.getItem("spotify_access_token");
+        const refreshToken = localStorage.getItem("spotify_refresh_token");
+        
+        if (accessToken || refreshToken) {
+          setIsSpotifyConnected(true);
+        }
       } catch (error) {
-        console.error(error);
+        console.error("Spotify authentication failed:", error);
+        
+        setIsSpotifyConnected(false);
+        
+        setToast({
+          message: "Could not connect to Spotify. Please try again.",
+          type: "error",
+        });
       }
     }
     
-    authenticate();
+    authenticateSpotify();
   }, []);
+
+  function disconnectSpotify() {
+    localStorage.removeItem("spotify_access_token");
+    localStorage.removeItem("spotify_refresh_token");
+    localStorage.removeItem("spotify_token_expires_at");
+    localStorage.removeItem("spotify_code_verifier");
+
+    setIsSpotifyConnected(false);
+    setSearchResults([]);
+    setPlaylistTracks([]);
+    setHasSearched(false);
+
+    setToast({
+      message: "Disconnected from Spotify.",
+      type: "success",
+    });
+  }
+
+  function handleSpotifyConnection() {
+    if (isSpotifyConnected) {
+      disconnectSpotify();
+      return;
+    }
+    
+    redirectToSpotifyLogin();
+  }
 
   function addTrack(track) {
     setPlaylistTracks((prevTracks) => {
@@ -155,14 +219,10 @@ function App() {
         }
       />
 
-      <Header />
-
-      <button
-        type="button"
-        onClick={redirectToSpotifyLogin}
-      >
-        Connect Spotify
-      </button>
+      <Header 
+        isSpotifyConnected={isSpotifyConnected}
+        onSpotifyConnection={handleSpotifyConnection}
+      />
 
       <main>
         <SearchBar 

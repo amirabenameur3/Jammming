@@ -1,4 +1,8 @@
 .site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
   width: 100%;
   padding: 1.25rem 2rem;
   border-bottom: 1px solid var(--border-primary);
@@ -15,9 +19,67 @@
   font-style: italic;
 }
 
-.site-logo span:first-child {
+.site-logo > span:first-child {
   font-size: 2rem;
   line-height: 1;
+}
+
+.logo-text {
+  font-size: 2.2rem;
+}
+
+.logo-accent {
+  color: #d78cff;
+}
+
+.spotify-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+
+  padding: .45rem .9rem;
+  border-radius: 999px;
+
+  border: 1px solid #1ed760;
+
+  background: rgba(30,215,96,.08);
+
+  color: #1ed760;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all .25s ease;
+}
+
+.spotify-pill:hover {
+  transform: translateY(-2px);
+  background: rgba(30,215,96,.16);
+  box-shadow: 0 10px 25px rgba(30,215,96,.18);
+}
+
+.spotify-pill.connected:hover {
+  border-color: #ff5a5a;
+  color: #ff5a5a;
+  background: rgba(255, 90, 90, 0.08);
+}
+
+.spotify-pill.connected:hover .spotify-status {
+  background: #ff5a5a;
+}
+
+.spotify-logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.spotify-status {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #1ed760;
 }
 
 @media (max-width: 600px) {
