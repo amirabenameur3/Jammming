@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { redirectToSpotifyLogin, exchangeCodeForToken, searchSpotify, createPlaylist, addTracksToPlaylist, } from "./services/spotify.js";
 import Header from "./components/Header/Header";
 import SearchBar from "./components/SearchBar/SearchBar";
@@ -9,6 +10,11 @@ import Footer from "./components/Footer/Footer";
 import "./App.css";
 
 function App() {
+
+  // ======================
+  // State
+  // ======================
+
   const [isSpotifyConnected, setIsSpotifyConnected] = useState(() => {
     return Boolean(localStorage.getItem("spotify_access_token"));
   });
@@ -26,6 +32,8 @@ function App() {
   const [isSearching, setIsSearching] = useState(false);
 
   const [isSaving, setIsSaving] = useState(false);
+
+  const [sortOption, setSortOption] = useState("default");
   
   const [toast, setToast] = useState({message: "", type: "success",});
 
@@ -101,6 +109,35 @@ function App() {
     redirectToSpotifyLogin();
   }
 
+  // ======================
+  // Derived data
+  // ======================
+  const sortedSearchResults = useMemo(() => {
+    return [...searchResults].sort((a, b) => {
+      switch (sortOption) {
+        case "track":
+          return a.name.localeCompare(b.name);
+
+        case "artist":
+          return a.artist.localeCompare(b.artist);
+        
+        case "album":
+          return a.album.localeCompare(b.album);
+        
+        case "duration":
+          return a.duration - b.duration;
+
+        default:
+          return 0;
+      }
+    });
+  }, [searchResults, sortOption]);
+
+
+  // ======================
+  // Handlers
+  // ======================
+
   function addTrack(track) {
     setPlaylistTracks((prevTracks) => {
       const isAlreadyAdded = prevTracks.some(
@@ -114,7 +151,7 @@ function App() {
       return [...prevTracks, track];
     });
   }
-
+  
   function removeTrack(track) {
     setPlaylistTracks((prevTracks) => 
       prevTracks.filter(
@@ -234,11 +271,13 @@ function App() {
 
         <div className="workspace">
           <SearchResults 
-            tracks={searchResults} 
+            tracks={sortedSearchResults} 
             onAdd={addTrack}
             hasSearched={hasSearched}
             playlistTracks={playlistTracks}
             isSearching={isSearching}
+            sortOption={sortOption}
+            onSortChange={setSortOption}
           />
           <Playlist 
             tracks={playlistTracks} 

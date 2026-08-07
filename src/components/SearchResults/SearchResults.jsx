@@ -2,14 +2,31 @@ import TrackList from "../TrackList/TrackList";
 import SearchSkeleton from "../SearchSkeleton/SearchSkeleton";
 import "./SearchResults.css";
 
-function SearchResults({ tracks, onAdd, hasSearched, playlistTracks, isSearching }) {
+function SearchResults({ tracks, onAdd, hasSearched, playlistTracks, isSearching, sortOption, onSortChange }) {
   return (
-    <section className="results-panel" aria-labelledby="results-heading">
+    <section className="search-results-panel" aria-labelledby="search-results-heading">
       <div className="panel-header">
-        <h2 id="results-heading">Search Results</h2>
-        <span>
-          {tracks.length} {tracks.length === 1 ? "track" : "tracks"}
-        </span>
+        <h2 id="search-results-heading">Search Results</h2>
+
+        <div className="search-results-controls">
+          <label htmlFor="sort-results">Sort by</label>
+
+          <select
+            id="sort-results"
+            value={sortOption}
+            onChange={(event) => onSortChange(event.target.value)}
+          >
+            <option value="default">Default</option>
+            <option value="track">Track name</option>
+            <option value="artist">Artist</option>
+            <option value="album">Album</option>
+            <option value="duration">Duration</option>
+          </select>
+
+          <span>
+            {tracks.length} {tracks.length === 1 ? "track" : "tracks"}
+          </span>
+        </div> 
       </div>
 
       {isSearching ? (
