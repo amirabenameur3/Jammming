@@ -1,10 +1,40 @@
 import Track from "../Track/Track";
 import "./TrackList.css";
 
-function TrackList({ tracks, playlistTracks = [], isRemoval = false, onAdd, onRemove }) {
+function TrackList({ tracks, playlistTracks = [], isRemoval = false, onAdd, onRemove, onReorder }) {
+  
+  function handleDragStart(event, index) {
+    event.dataTransfer.setData("text/plain", index);
+    event.dataTransfer.effectAllowed = "move";
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer.dropEffect = "move";
+  }
+
+  function handleDrop(event, toIndex) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const fromIndex = Number(
+      event.dataTransfer.getData("text/plain")
+    );
+
+    console.log("from:", fromIndex);
+    console.log("to:", toIndex);
+
+    if (fromIndex === toIndex) {
+      return;
+    }
+
+    onReorder(fromIndex, toIndex);
+  }
+  
   return (
     <div className="track-list">
-      {tracks.map((track) => {
+      {tracks.map((track, index) => {
         const isAdded = playlistTracks.some(
           (playlistTrack) => playlistTrack.id === track.id
         );
@@ -23,6 +53,14 @@ function TrackList({ tracks, playlistTracks = [], isRemoval = false, onAdd, onRe
             isAdded={isAdded}
             onAdd={onAdd}
             onRemove={onRemove}
+            draggable={isRemoval}
+            onDragStart={(event) => 
+              handleDragStart(event, index)
+            }
+            onDragOver={handleDragOver}
+            onDrop={(event) => 
+              handleDrop(event, index)
+            }
           />
         );
       })}      

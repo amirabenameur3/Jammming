@@ -160,6 +160,18 @@ function App() {
     );
   }
 
+  function reorderPlaylist(fromIndex, toIndex) {
+    setPlaylistTracks((currentTracks) => {
+      const updatedTracks = [...currentTracks];
+
+      const [movedTrack] = updatedTracks.splice(fromIndex, 1);
+
+      updatedTracks.splice(toIndex, 0, movedTrack);
+
+      return updatedTracks;
+    });
+  }
+
   async function savePlaylist() {
   const cleanPlaylistName = playlistName.trim();
 
@@ -286,6 +298,7 @@ function App() {
             onRemove={removeTrack}
             onSave={savePlaylist}
             isSaving={isSaving}
+            onReorder={reorderPlaylist}
           />
         </div>
       </main>

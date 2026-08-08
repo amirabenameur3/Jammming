@@ -1,6 +1,6 @@
 import "./Track.css";
 
-function Track({ track, name, artist, album, image, duration, spotifyUrl, isRemoval, isAdded, onAdd, onRemove }) {
+function Track({ track, name, artist, album, image, duration, spotifyUrl, isRemoval, isAdded, onAdd, onRemove, draggable, onDragStart, onDragOver, onDrop }) {
 
   function handleClick() {
     if (isRemoval) {
@@ -25,7 +25,13 @@ function Track({ track, name, artist, album, image, duration, spotifyUrl, isRemo
   }
   
   return (
-    <article className="track">
+    <article 
+      className="track"
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
       <a
         className="track-image-link"
         href={spotifyUrl}

@@ -1,7 +1,7 @@
 import TrackList from "../TrackList/TrackList";
 import "./Playlist.css";
 
-function Playlist({ tracks, playlistName, onNameChange, onRemove, onSave, isSaving }) {
+function Playlist({ tracks, playlistName, onNameChange, onRemove, onSave, isSaving, onReorder }) {
   return (
     <section className="playlist-panel" aria-labelledby="playlist-heading">
       <div className="panel-header">
@@ -26,6 +26,7 @@ function Playlist({ tracks, playlistName, onNameChange, onRemove, onSave, isSavi
           tracks={tracks} 
           isRemoval 
           onRemove={onRemove}
+          onReorder={onReorder}
         />
       ) : (
           <p className="empty-message">
