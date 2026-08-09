@@ -1,6 +1,11 @@
-import { useState, useEffect } from "react";
-import { useMemo } from "react";
-import { redirectToSpotifyLogin, exchangeCodeForToken, searchSpotify, createPlaylist, addTracksToPlaylist, } from "./services/spotify.js";
+import { useState, useEffect, useMemo } from "react";
+import { 
+  redirectToSpotifyLogin, 
+  exchangeCodeForToken, 
+  searchSpotify, 
+  createPlaylist, 
+  addTracksToPlaylist, 
+} from "./services/spotify.js";
 import Header from "./components/Header/Header";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchResults from "./components/SearchResults/SearchResults";
@@ -37,6 +42,10 @@ function App() {
   
   const [toast, setToast] = useState({message: "", type: "success",});
 
+  // =======================
+  // Spotify Authentication
+  // =======================
+
   useEffect(() => {
     async function authenticateSpotify() {
       const params = new URLSearchParams(window.location.search);
@@ -54,10 +63,7 @@ function App() {
             window.location.pathname
           );
           
-          setToast({
-            message: "Spotify connected successfully.",
-            type: "success",
-          });
+          showToast("Spotify connected successfully.");
           
           return;
         }
@@ -73,10 +79,10 @@ function App() {
         
         setIsSpotifyConnected(false);
         
-        setToast({
-          message: "Could not connect to Spotify. Please try again.",
-          type: "error",
-        });
+        showToast(
+          "Could not connect to Spotify. Please try again.", 
+          "error"
+        );
       }
     }
     
@@ -94,10 +100,7 @@ function App() {
     setPlaylistTracks([]);
     setHasSearched(false);
 
-    setToast({
-      message: "Disconnected from Spotify.",
-      type: "success",
-    });
+    showToast("Disconnected from Spotify.");
   }
 
   function handleSpotifyConnection() {
@@ -110,8 +113,36 @@ function App() {
   }
 
   // ======================
-  // Derived data
+  // Toast Notifications
   // ======================
+
+  useEffect(() => {
+    if (!toast.message) {
+      return;
+    }
+    
+    const timer = setTimeout(hideToast, 3000);
+    
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [toast.message]);
+
+  function showToast(message, type = "success") {
+    setToast({ message, type });
+  }
+
+  function hideToast() {
+    setToast({
+      message: "",
+      type: "success",
+    });
+  }
+
+  // ========================
+  // Search Results Sorting
+  // ========================
+
   const sortedSearchResults = useMemo(() => {
     return [...searchResults].sort((a, b) => {
       switch (sortOption) {
@@ -134,14 +165,14 @@ function App() {
   }, [searchResults, sortOption]);
 
 
-  // ======================
-  // Handlers
-  // ======================
+  // ==========================
+  // Playlist Track Management
+  // ==========================
 
   function addTrack(track) {
     setPlaylistTracks((prevTracks) => {
       const isAlreadyAdded = prevTracks.some(
-        (playlistTracks) => playlistTracks.id === track.id
+        (playlistTrack) => playlistTrack.id === track.id
       );
 
       if(isAlreadyAdded) {
@@ -172,51 +203,55 @@ function App() {
     });
   }
 
+  // ======================
+  // Playlist Saving
+  // ======================
+
   async function savePlaylist() {
-  const cleanPlaylistName = playlistName.trim();
-
-  if (!cleanPlaylistName || playlistTracks.length === 0 || isSaving) {
-    return;
-  }
-
-  setIsSaving(true);
-
-  try {
-    const playlist = await createPlaylist(cleanPlaylistName);
-
-    const trackUris = playlistTracks
-      .map((track) => track.uri)
-      .filter(Boolean);
-
-    if (trackUris.length === 0) {
-      throw new Error("No valid Spotify tracks were found.");
+    const cleanPlaylistName = playlistName.trim();
+    
+    if (!cleanPlaylistName || playlistTracks.length === 0 || isSaving) {
+      return;
     }
-
-    await addTracksToPlaylist(playlist.id, trackUris);
-
-    showToast(
-      "Your playlist has been saved to Spotify.",
-      "success"
-    );
-
-    setPlaylistName("My Awesome Playlist");
-    setPlaylistTracks([]);
-    setSearchResults([]);
-    setSearchTerm("");
-    setHasSearched(false);
-
-  } catch (error) {
-    console.error("Could not save playlist:", error);
-
-    showToast(
-      error.message ||
-        "The playlist could not be saved. Please try again.",
-      "error"
-    );
-  } finally {
-    setIsSaving(false);
+    
+    setIsSaving(true);
+    
+    try {
+      const playlist = await createPlaylist(cleanPlaylistName);
+      
+      const trackUris = playlistTracks
+        .map((track) => track.uri)
+        .filter(Boolean);
+        
+      if (trackUris.length === 0) {
+        throw new Error("No valid Spotify tracks were found.");
+      }
+        
+      await addTracksToPlaylist(playlist.id, trackUris);
+        
+      showToast("Your playlist has been saved to Spotify.");
+        
+      setPlaylistName("My Awesome Playlist");
+      setPlaylistTracks([]);
+      setSearchResults([]);
+      setSearchTerm("");
+      setHasSearched(false);
+    } catch (error) {
+      console.error("Could not save playlist:", error);
+      
+      showToast(
+        error.message ||
+          "The playlist could not be saved. Please try again.",
+        "error"
+      );
+    } finally {
+      setIsSaving(false);
+    }
   }
-}
+
+  // ======================
+  // Spotify Search
+  // ======================
 
   async function performSearch() {
     const query = searchTerm.trim();
@@ -244,29 +279,15 @@ function App() {
     }
   }
 
-  function showToast(message, type = "success") {
-    setToast({ message, type });
-    
-    setTimeout(() => {
-      setToast({
-        message: "",
-        type: "success",
-      });
-    }, 4000);
-  }
-
   return (
     <div className="app">
-      <Toast
-        message={toast.message}
-        type={toast.type}
-        onClose={() =>
-          setToast({
-            message: "",
-            type: "success",
-          })
-        }
-      />
+      {toast.message && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      )}
 
       <Header 
         isSpotifyConnected={isSpotifyConnected}

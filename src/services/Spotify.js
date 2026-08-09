@@ -1,11 +1,17 @@
+// ======================
+// Spotify Configuration
+// ======================
+
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-
 const redirectUri = "http://127.0.0.1:5173/";
-
 const scopes = [
   "playlist-modify-public",
   "playlist-modify-private",
 ];
+
+// ============================
+// PKCE Authentication Helpers
+// ============================
 
 function generateRandomString(length) {
   const possible =
@@ -38,6 +44,10 @@ async function generateCodeChallenge(codeVerifier) {
     .replace(/\//g, "_");
 }
 
+// ======================
+// Spotify Login
+// ======================
+
 async function redirectToSpotifyLogin() {
   const codeVerifier = generateRandomString(64);
   const codeChallenge = await generateCodeChallenge(codeVerifier);
@@ -60,19 +70,14 @@ async function redirectToSpotifyLogin() {
   window.location.href = authUrl.toString();
 }
 
-async function exchangeCodeForToken() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get("code");
+// ============================
+// Authorization Code Exchange
+// ============================
 
+async function exchangeCodeForToken(code) {
   if (!code) {
     return null;
   }
-
-  window.history.replaceState(
-    {},
-    document.title,
-    window.location.pathname
-  );
 
   const codeVerifier = localStorage.getItem("spotify_code_verifier");
 
@@ -128,6 +133,10 @@ async function exchangeCodeForToken() {
 
   return tokenData.access_token;
 }
+
+// ======================
+// Access Token Refresh
+// ======================
 
 async function refreshAccessToken() {
   const refreshToken = localStorage.getItem(
@@ -192,6 +201,10 @@ async function refreshAccessToken() {
   return tokenData.access_token;
 }
 
+// =========================
+// Access Token Validation
+// =========================
+
 async function getValidAccessToken() {
   const accessToken = localStorage.getItem(
     "spotify_access_token"
@@ -215,6 +228,10 @@ async function getValidAccessToken() {
   return refreshAccessToken();
 }
 
+// ======================
+// Spotify Search
+// ======================
+
 async function searchSpotify(searchTerm) {
   const accessToken = await getValidAccessToken();
 
@@ -226,74 +243,57 @@ async function searchSpotify(searchTerm) {
 
   try {
     const response = await fetch(
-        `https://api.spotify.com/v1/search?q=${encodeURIComponent(
-            searchTerm
-        )}&type=track&limit=10`,
-        {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-            signal: controller.signal,
-        }
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+        searchTerm
+      )}&type=track&limit=10`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        signal: controller.signal,
+      }
     );
     
     if (!response.ok) {
-        const errorData = await response.json();
-        
-        console.error("Spotify search error:", errorData);
-        
-        throw new Error(
-            errorData.error?.message || "Could not search Spotify."
-        );
+      const errorData = await response.json();
+      
+      console.error("Spotify search error:", errorData);
+      
+      throw new Error(
+        errorData.error?.message || "Could not search Spotify."
+      );
     }
     
     const data = await response.json();
     
     return data.tracks.items.map((track) => ({
-        id: track.id,
-        name: track.name,
-        artist: track.artists.map((artist) => artist.name).join(", "),
-        album: track.album.name,
-        uri: track.uri,
-        image: track.album.images[1]?.url
-            || track.album.images[0]?.url
-            || "",
-        duration: track.duration_ms,
-        spotifyUrl: track.external_urls.spotify,
+      id: track.id,
+      name: track.name,
+      artist: track.artists.map((artist) => artist.name).join(", "),
+      album: track.album.name,
+      uri: track.uri,
+      image: track.album.images[1]?.url
+        || track.album.images[0]?.url
+        || "",
+      duration: track.duration_ms,
+      spotifyUrl: track.external_urls.spotify,
     }));
-  } catch(error) {
+  } catch (error) {
     if (error.name === "AbortError") {
-        throw new Error(
-            "The Spotify search took too long. Please try again."
-        );
+      throw new Error(
+        "The Spotify search took too long. Please try again."
+      );
     }
-
+    
     throw error;
   } finally {
     clearTimeout(timeoutId);
   }
 }
 
-async function getCurrentUser() {
-  const accessToken = await getValidAccessToken();
-
-  const response = await fetch("https://api.spotify.com/v1/me", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (!response.ok) {
-    const errorMessage = await response.text();
-
-    throw new Error(
-      errorMessage ||
-        `Could not get Spotify user. Status: ${response.status}`
-    );
-  }
-
-  return response.json();
-}
+// ======================
+// Playlist Management
+// ======================
 
 async function createPlaylist(playlistName) {
   const accessToken = await getValidAccessToken();
@@ -337,7 +337,7 @@ async function addTracksToPlaylist(playlistId, trackUris) {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-        body: JSON.stringify({
+      body: JSON.stringify({
         uris: trackUris,
       }),
     }
@@ -355,6 +355,10 @@ async function addTracksToPlaylist(playlistId, trackUris) {
   return response.json();
 }
 
+// ======================
+// Exports
+// ======================
+
 export {
   clientId,
   redirectUri,
@@ -366,7 +370,6 @@ export {
   refreshAccessToken,
   getValidAccessToken,
   searchSpotify,
-  getCurrentUser,
   createPlaylist,
   addTracksToPlaylist,
 };

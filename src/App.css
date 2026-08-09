@@ -20,6 +20,36 @@ main {
   margin-top: 1.25rem;
 }
 
+.search-results-panel,
+.playlist-panel {
+  min-height: 420px;
+  padding: 1.75rem;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-panel);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.panel-header h2 {
+  font-size: 1.5rem;
+}
+
+.panel-header span {
+  color: var(--text-secondary);
+}
+
+.empty-message {
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 900px) {
   .workspace {
     grid-template-columns: 1fr;
@@ -28,7 +58,29 @@ main {
 
 @media (max-width: 600px) {
   main {
-    width: min(100% - 1rem, 1400px);
+    width: calc(100% - 1rem);
     padding-block: 1rem;
+  }
+
+  .search-results-panel,
+  .playlist-panel {
+    padding: 1.25rem;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .panel-header h2 {
+    font-size: 1.35rem;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .search-results-panel,
+  .playlist-panel {
+    padding: 1rem;
   }
 }

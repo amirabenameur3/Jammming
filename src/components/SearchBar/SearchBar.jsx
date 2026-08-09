@@ -26,9 +26,9 @@ function SearchBar({ searchTerm, onSearchTermChange, onSearch, isSearching }) {
           <button 
             type="submit"
             disabled={isSearching}
-            >
-              {isSearching ? "Searching..." : "Search"}
-            </button>
+          >
+            {isSearching ? "Searching..." : "Search"}
+          </button>
         </div>
       </form>
     </section>

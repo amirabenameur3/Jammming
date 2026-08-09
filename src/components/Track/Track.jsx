@@ -1,6 +1,22 @@
 import "./Track.css";
 
-function Track({ track, name, artist, album, image, duration, spotifyUrl, isRemoval, isAdded, onAdd, onRemove, draggable, onDragStart, onDragOver, onDrop }) {
+function Track({ 
+  track, 
+  name, 
+  artist, 
+  album, 
+  image, 
+  duration, 
+  spotifyUrl, 
+  isRemoval, 
+  isAdded, 
+  onAdd, 
+  onRemove, 
+  draggable, 
+  onDragStart, 
+  onDragOver, 
+  onDrop 
+}) {
 
   function handleClick() {
     if (isRemoval) {
@@ -16,7 +32,6 @@ function Track({ track, name, artist, album, image, duration, spotifyUrl, isRemo
   function formatDuration(milliseconds) {
     if (typeof milliseconds !== "number") {
       return "--:--";
-    
     }
     const minutes = Math.floor(milliseconds / 60000);
     const seconds = Math.floor((milliseconds % 60000) / 1000);
@@ -48,7 +63,7 @@ function Track({ track, name, artist, album, image, duration, spotifyUrl, isRemo
       
       <div className="track-info">
         <h3>{name}</h3>
-        <p>{artist} | {album}</p>
+        <p>{artist} · {album}</p>
       </div>
 
       <span className="track-duration">

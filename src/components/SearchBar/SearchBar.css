@@ -48,8 +48,27 @@
   font-weight: 700;
 }
 
-.search-input-group button:hover {
+.search-input-group button:not(:disabled):hover {
   background-color: rgba(74, 222, 128, 0.12);
+}
+
+.search-input-group button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.search-input-group input:focus,
+.search-input-group input:focus-visible {
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border-color: var(--accent-green);
+  outline: 2px solid rgba(74, 222, 128, 0.25);
+  outline-offset: 2px;
+}
+
+.search-input-group button:focus-visible {
+  outline: 2px solid rgba(74, 222, 128, 0.25);
+  outline-offset: 2px;
 }
 
 @media (max-width: 600px) {

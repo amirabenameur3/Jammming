@@ -6,13 +6,12 @@ function Header({ isSpotifyConnected, onSpotifyConnection }) {
     <header className="site-header">
       <a 
         className="site-logo" 
-        href="/" 
         aria-label="Jammming home"
-        >
-          <span aria-hidden="true">♫</span>
-          <span className="logo-text">
-            Ja<span className="logo-accent">mmm</span>ing
-          </span>
+      >
+        <span aria-hidden="true">♫</span>
+        <span className="logo-text">
+          Ja<span className="logo-accent">mmm</span>ing
+        </span>
       </a>
 
       <button

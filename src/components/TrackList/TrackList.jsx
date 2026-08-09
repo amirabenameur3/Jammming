@@ -1,7 +1,14 @@
 import Track from "../Track/Track";
 import "./TrackList.css";
 
-function TrackList({ tracks, playlistTracks = [], isRemoval = false, onAdd, onRemove, onReorder }) {
+function TrackList({ 
+  tracks, 
+  playlistTracks = [], 
+  isRemoval = false, 
+  onAdd, 
+  onRemove, 
+  onReorder 
+}) {
   
   function handleDragStart(event, index) {
     event.dataTransfer.setData("text/plain", index);
@@ -22,9 +29,6 @@ function TrackList({ tracks, playlistTracks = [], isRemoval = false, onAdd, onRe
       event.dataTransfer.getData("text/plain")
     );
 
-    console.log("from:", fromIndex);
-    console.log("to:", toIndex);
-
     if (fromIndex === toIndex) {
       return;
     }
@@ -40,7 +44,7 @@ function TrackList({ tracks, playlistTracks = [], isRemoval = false, onAdd, onRe
         );
 
         return (
-          <Track 
+          <Track
             key={track.id}
             track={track}
             name={track.name}
@@ -54,11 +58,11 @@ function TrackList({ tracks, playlistTracks = [], isRemoval = false, onAdd, onRe
             onAdd={onAdd}
             onRemove={onRemove}
             draggable={isRemoval}
-            onDragStart={(event) => 
+            onDragStart={(event) =>
               handleDragStart(event, index)
             }
             onDragOver={handleDragOver}
-            onDrop={(event) => 
+            onDrop={(event) =>
               handleDrop(event, index)
             }
           />

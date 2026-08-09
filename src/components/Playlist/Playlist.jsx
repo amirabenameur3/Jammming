@@ -1,7 +1,15 @@
 import TrackList from "../TrackList/TrackList";
 import "./Playlist.css";
 
-function Playlist({ tracks, playlistName, onNameChange, onRemove, onSave, isSaving, onReorder }) {
+function Playlist({ 
+  tracks, 
+  playlistName, 
+  onNameChange, 
+  onRemove, 
+  onSave, 
+  isSaving, 
+  onReorder 
+}) {
   return (
     <section className="playlist-panel" aria-labelledby="playlist-heading">
       <div className="panel-header">
@@ -29,16 +37,20 @@ function Playlist({ tracks, playlistName, onNameChange, onRemove, onSave, isSavi
           onReorder={onReorder}
         />
       ) : (
-          <p className="empty-message">
-            Add tracks from the search results to build your playlist.
-          </p>
-        )}
+        <p className="empty-message">
+          Add tracks from the search results to build your playlist.
+        </p>
+      )}
 
       <button
         className="save-button"
         type="button"
         onClick={onSave}
-        disabled={tracks.length === 0 || playlistName.trim() === "" || isSaving}
+        disabled={
+          tracks.length === 0 || 
+          playlistName.trim() === "" || 
+          isSaving
+        }
       >
         {isSaving ? "⏳ Saving..." : "Save to Spotify"}
       </button>

@@ -14,7 +14,7 @@
   line-height: 0;
 }
 
-.track-image-link:focus-visible {
+.track-image-link:focus-visible, .track-action:focus-visible {
   outline: 2px solid var(--accent-green);
   outline-offset: 3px;
 }
@@ -51,12 +51,12 @@
 .track-info h3 {
   margin: 0 0 0.35rem;
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .track-info p {
   margin: 0;
-  color: #b3b3b3;
+  color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
@@ -83,7 +83,7 @@
     transform 0.2s ease;
 }
 
-.track-action:hover {
+.track-action:not(:disabled):hover {
   color: var(--accent-green);
   background-color: rgba(74, 222, 128, 0.1);
   transform: scale(1.08);
@@ -103,4 +103,39 @@
 
 .track[draggable="true"]:active {
   cursor: grabbing;
+}
+
+@media (max-width: 360px) {
+  .track {
+    gap: 0.65rem;
+    padding: 0.85rem 0;
+  }
+
+  .track-image {
+    width: 52px;
+    height: 52px;
+  }
+
+  .track-info h3 {
+    font-size: 0.92rem;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+  }
+
+  .track-info p {
+    font-size: 0.8rem;
+    line-height: 1.25;
+  }
+
+  .track-duration {
+    font-size: 0.8rem;
+    margin-left: 0.4rem;
+    margin-right: 0.35rem;
+  }
+
+  .track-action {
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1.2rem;
+  }
 }

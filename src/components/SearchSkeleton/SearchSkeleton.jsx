@@ -6,6 +6,7 @@ function SearchSkeleton() {
   return (
     <div
       className="search-skeleton"
+      role="status"
       aria-label="Loading search results"
       aria-busy="true"
     >

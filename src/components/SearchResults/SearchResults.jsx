@@ -2,9 +2,20 @@ import TrackList from "../TrackList/TrackList";
 import SearchSkeleton from "../SearchSkeleton/SearchSkeleton";
 import "./SearchResults.css";
 
-function SearchResults({ tracks, onAdd, hasSearched, playlistTracks, isSearching, sortOption, onSortChange }) {
+function SearchResults({ 
+  tracks, 
+  onAdd, 
+  hasSearched, 
+  playlistTracks, 
+  isSearching, 
+  sortOption, 
+  onSortChange 
+}) {
   return (
-    <section className="search-results-panel" aria-labelledby="search-results-heading">
+    <section 
+      className="search-results-panel" 
+      aria-labelledby="search-results-heading"
+    >
       <div className="panel-header">
         <h2 id="search-results-heading">Search Results</h2>
 
