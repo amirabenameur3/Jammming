@@ -1,27 +1,67 @@
-# 🎵 Jammming
+<p align="center">
+  <img src="./screenshots/Jammming-preview.png" width="900" alt="Jammming preview">
+</p>
 
-A responsive React web application that allows users to search for tracks using the Spotify Web API, build and reorder custom playlists, and save them directly to their Spotify account.
+<h1 align="center">🎵 Jammming</h1>
 
-Jammming was built as a front-end project to practice React, API integration, OAuth authentication, state management, asynchronous JavaScript, and responsive UI development.
+<p align="center">
+  <img src="https://img.shields.io/badge/Version-v1.0.0-blue">
+</p>
+
+<p align="center">
+  A modern and responsive React application for searching Spotify tracks, building custom playlists, reordering tracks, and saving playlists directly to Spotify.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-ES6-F7DF1E?logo=javascript&logoColor=black">
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white">
+  <img src="https://img.shields.io/badge/Spotify-Web%20API-1DB954?logo=spotify&logoColor=white">
+  <img src="https://img.shields.io/badge/Auth-OAuth%202.0%20PKCE-blue">
+  <img src="https://img.shields.io/badge/Responsive-Design-38bdf8">
+  <img src="https://img.shields.io/badge/Drag%20%26%20Drop-Playlist-orange">
+  <img src="https://img.shields.io/badge/Status-Portfolio%20Project-purple">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/repo-size/amirabenameur3/Jammming">
+  <img src="https://img.shields.io/github/last-commit/amirabenameur3/Jammming">
+  <img src="https://img.shields.io/github/languages/count/amirabenameur3/Jammming">
+</p>
+
+<p align="center">
+  <a href="https://amirabenameur3.github.io/Jammming/">
+    <img src="https://img.shields.io/badge/🌐-Live%20Demo-38bdf8?style=for-the-badge">
+  </a>
+</p>
+
+---
+
+# 📖 Project Overview
+
+Jammming is a modern React music application designed to let users search Spotify's music catalog, build custom playlists, and save them directly to their Spotify account.
+
+The application integrates with the Spotify Web API to provide track search, playlist creation, Spotify account authentication, and direct links to tracks. It uses OAuth 2.0 with PKCE for secure browser-based authentication and automatically refreshes expired access tokens to maintain the user session.
+
+The project evolved from a basic playlist-building application into a more complete and responsive Spotify experience featuring sortable search results, drag-and-drop playlist reordering, duplicate-track prevention, loading skeletons, toast notifications, Spotify connection status, and reusable React components.
 
 ---
 
 ## ✨ Features
 
-- 🔐 Connect securely to Spotify using OAuth 2.0 with PKCE
-- 🔎 Search Spotify for tracks
-- ↕️ Sort search results by track, artist, album, or duration
-- ➕ Add tracks to a custom playlist
-- ➖ Remove tracks from the playlist
-- ↕️ Reorder playlist tracks using drag and drop
-- ✏️ Customize the playlist name
-- 💾 Save playlists directly to the connected Spotify account
-- 🔄 Automatically refresh expired Spotify access tokens
-- 🔗 Open tracks directly in Spotify
-- 🔔 Toast notifications for user feedback and errors
-- 💀 Skeleton loading interface while searching
-- 🟢 Spotify connection status indicator
-- 📱 Responsive layout for desktop and mobile devices
+- 🔐 **Spotify authentication** — Secure OAuth 2.0 Authorization Code Flow with PKCE
+- 🔎 **Track search** — Search Spotify's music catalog
+- ↕️ **Sorting** — Sort results by track, artist, album, or duration
+- ➕ **Playlist building** — Add and remove tracks with duplicate prevention
+- ↕️ **Drag and drop** — Reorder tracks directly inside the playlist
+- ✏️ **Custom playlist names** — Rename playlists before saving
+- 💾 **Save to Spotify** — Create playlists directly in the connected Spotify account
+- 🔄 **Automatic token refresh** — Refresh expired access tokens without interrupting the session
+- 🟢 **Connection status** — Clear Spotify connected/disconnected state
+- 🔗 **Spotify links** — Open tracks directly in Spotify
+- 🔔 **Toast notifications** — Feedback for authentication, saving, and errors
+- 💀 **Skeleton loading** — Loading feedback while Spotify search results are retrieved
+- 📱 **Responsive design** — Optimized layouts for desktop and mobile devices
 
 ---
 
@@ -39,46 +79,51 @@ Jammming was built as a front-end project to practice React, API integration, OA
 
 ## 🛠️ Technologies
 
-- **React 19**
-- **JavaScript (ES6+)**
-- **CSS3**
-- **Vite**
-- **Spotify Web API**
-- **OAuth 2.0 with PKCE**
-- **React Icons**
-- **HTML5 Drag and Drop API**
-- **ESLint**
+| Technology | Purpose |
+| --- | --- |
+| React 19 | Component-based user interface |
+| JavaScript (ES6+) | Application logic |
+| CSS3 | Styling and responsive design |
+| Vite 8 | Development and build tooling |
+| Spotify Web API | Track search and playlist creation |
+| OAuth 2.0 + PKCE | Spotify authentication |
+| React Icons | Interface icons |
+| HTML5 Drag and Drop API | Playlist track reordering |
+| ESLint | Code quality and linting |
 
 ---
 
 ## 🚀 How It Works
 
-1. Connect your Spotify account.
-2. Search for a song, artist, or album.
-3. Browse and sort the returned Spotify tracks.
-4. Add tracks to your playlist.
-5. Drag and drop tracks to change their order.
-6. Enter a custom playlist name.
-7. Save the playlist directly to Spotify.
+1. **Connect to Spotify** using the Spotify authentication button.
+2. **Search** for a track, artist, or album.
+3. **Sort** the search results when needed.
+4. **Add tracks** to your custom playlist.
+5. **Drag and drop** playlist tracks to reorder them.
+6. **Choose a playlist name.**
+7. **Save the playlist** directly to your Spotify account.
 
-Tracks can also be opened in Spotify from the application.
+Track artwork can also be used to open the corresponding track in Spotify.
 
 ---
 
 ## 🔐 Spotify Authentication
 
-Jammming uses the **OAuth 2.0 Authorization Code Flow with PKCE (Proof Key for Code Exchange)** to authenticate users with Spotify.
+Jammming uses the **OAuth 2.0 Authorization Code Flow with PKCE (Proof Key for Code Exchange)**.
 
-PKCE allows the application to authenticate directly from the browser without storing a Spotify client secret in the front end.
+PKCE is designed for applications that cannot securely store a client secret, such as browser-based front-end applications.
 
-After authentication, the application manages:
+During authentication, Jammming generates a code verifier and code challenge before redirecting the user to Spotify. After authorization, the returned authorization code is exchanged for an access token.
 
-- Spotify access tokens
+The application manages:
+
+- Access tokens
 - Refresh tokens
 - Token expiration
-- Automatic access-token refresh
+- Automatic access-token renewal
 
-This allows the user to continue using the application when an access token expires without manually reconnecting to Spotify.
+When an access token expires, Jammming attempts to refresh it automatically so the user can continue searching and saving playlists without reconnecting manually.
+
 
 ---
 
@@ -132,8 +177,8 @@ JAMMING/
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
-cd jamming
+git clone https://github.com/amirabenameur3/Jammming.git
+cd Jammming
 ```
 
 ### 2. Install dependencies
@@ -144,19 +189,17 @@ npm install
 
 ### 3. Create a Spotify application
 
-Create an application in the Spotify Developer Dashboard.
-
-Copy the **Client ID** from your Spotify application.
+Create an application through the Spotify Developer Dashboard and copy its **Client ID**.
 
 ### 4. Configure the redirect URI
 
-Add the following redirect URI to your Spotify application:
+For local development, add the following redirect URI to your Spotify application:
 
 ```text
 http://127.0.0.1:5173/
 ```
 
-The redirect URI configured in Spotify must match the URI used by the application.
+The redirect URI registered with Spotify must match the URI used by the application.
 
 ### 5. Configure the environment variable
 
@@ -166,80 +209,78 @@ Create a `.env` file in the project root:
 VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
 ```
 
-Do not commit your `.env` file to version control.
+> The `.env` file is excluded from version control and should not be committed.
 
-### 6. Start the development server
+### 6. Start the application
 
 ```bash
 npm run dev
 ```
 
-Open:
+Then open:
 
 ```text
 http://127.0.0.1:5173/
 ```
-
-in your browser.
-
 ---
 
 ## 📜 Available Scripts
-
-Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Create a production build:
+Starts the Vite development server.
 
 ```bash
 npm run build
 ```
 
-Run ESLint:
+Creates the production build.
 
 ```bash
 npm run lint
 ```
 
-Preview the production build locally:
+Runs ESLint across the project.
 
 ```bash
 npm run preview
 ```
 
+Locally previews the production build.
+
 ---
 
 ## 🎯 What I Learned
 
-Building Jammming helped strengthen my understanding of:
+Building Jammming strengthened my understanding of:
 
-- Building reusable React components
-- Managing application state with React hooks
+- Designing reusable React components
+- Managing state with React hooks
 - Passing data and callbacks through props
-- Handling asynchronous API requests
-- Integrating a third-party REST API
+- Handling asynchronous operations
+- Working with third-party REST APIs
 - Implementing OAuth 2.0 authentication with PKCE
 - Managing access and refresh tokens
-- Handling token expiration automatically
-- Creating loading, success, and error UI states
+- Handling authentication expiration
+- Building loading, success, and error states
 - Implementing drag-and-drop interactions
-- Designing responsive layouts
+- Structuring React applications into components and services
+- Creating responsive interfaces
 - Improving accessibility with semantic HTML and ARIA attributes
-- Structuring a React application into components and services
+- Managing environment variables in Vite
 
 ---
 
 ## 🔮 Future Improvements
 
-Possible future improvements include:
+Potential improvements for future releases include:
 
-- Advanced filtering options
-- Improved drag-and-drop support for touch devices
+- Enhanced search filtering
+- Touch-friendly playlist reordering
 - Additional Spotify playlist management features
-- Automated testing
+- Automated component and integration testing
 
 ---
 
@@ -252,8 +293,10 @@ PhD Researcher in Transportation Engineering | Front-End Developer
 GitHub:
 https://github.com/amirabenameur3
 
+Front-end development portfolio project.
+
 ---
 
 ## 📄 Disclaimer
 
-This project uses the Spotify Web API but is not affiliated with, sponsored by, or endorsed by Spotify.
+Jammming uses the Spotify Web API but is not affiliated with, sponsored by, or endorsed by Spotify.
