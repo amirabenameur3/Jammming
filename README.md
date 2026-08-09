@@ -73,7 +73,9 @@ The project evolved from a basic playlist-building application into a more compl
 
 ### Mobile
 
-![Jammming mobile interface](./screenshots/jamming-mobile.png)
+<p align="center">
+  <img src="./screenshots/jamming-mobile.png" width="350" alt="Jammming mobile interface">
+</p>
 
 ---
 
