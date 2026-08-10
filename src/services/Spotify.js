@@ -3,7 +3,9 @@
 // ======================
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-const redirectUri = "http://127.0.0.1:5173/";
+const redirectUri = import.meta.env.PROD
+  ? "https://amirabenameur3.github.io/Jammming/"
+  : "http://127.0.0.1:5173/";
 const scopes = [
   "playlist-modify-public",
   "playlist-modify-private",
