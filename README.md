@@ -92,6 +92,8 @@ The project evolved from a basic playlist-building application into a more compl
 | React Icons | Interface icons |
 | HTML5 Drag and Drop API | Playlist track reordering |
 | ESLint | Code quality and linting |
+| GitHub Actions | Automated production deployment |
+| GitHub Pages | Application hosting |
 
 ---
 
@@ -134,13 +136,18 @@ When an access token expires, Jammming attempts to refresh it automatically so t
 ```text
 JAMMMING/
 │
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+│
 ├── public/
 │   ├── favicon.svg
 │   └── icons.svg
 │
 ├── screenshots/
-│   ├── jamming-desktop.png
-│   └── jamming-mobile.png
+│   ├── jammming-desktop.png
+│   ├── jammming-mobile.png
+│   └── Jammming-preview.png
 │
 ├── src/
 │   ├── components/
@@ -201,7 +208,13 @@ For local development, add the following redirect URI to your Spotify applicatio
 http://127.0.0.1:5173/
 ```
 
-The redirect URI registered with Spotify must match the URI used by the application.
+For the deployed GitHub Pages application, the production redirect URI is:
+
+```text
+https://amirabenameur3.github.io/Jammming/
+```
+
+The redirect URI registered with Spotify must exactly match the URI used by the application.
 
 ### 5. Configure the environment variable
 
@@ -224,6 +237,7 @@ Then open:
 ```text
 http://127.0.0.1:5173/
 ```
+
 ---
 
 ## 📜 Available Scripts
@@ -254,6 +268,28 @@ Locally previews the production build.
 
 ---
 
+## 🌐 Deployment
+
+Jammming is deployed to GitHub Pages using GitHub Actions.
+
+Every push to the `main` branch triggers the deployment workflow, which:
+
+1. Installs the project dependencies.
+2. Builds the application with Vite.
+3. Injects the Spotify Client ID from GitHub Actions secrets.
+4. Uploads the generated `dist` directory.
+5. Deploys the production build to GitHub Pages.
+
+The production Spotify Client ID is configured as a GitHub repository secret:
+
+```text
+VITE_SPOTIFY_CLIENT_ID
+```
+
+This keeps environment-specific configuration out of the repository while allowing Vite to access the Client ID during the production build.
+
+---
+
 ## 🎯 What I Learned
 
 Building Jammming strengthened my understanding of:
@@ -272,6 +308,8 @@ Building Jammming strengthened my understanding of:
 - Creating responsive interfaces
 - Improving accessibility with semantic HTML and ARIA attributes
 - Managing environment variables in Vite
+- Deploying Vite applications to GitHub Pages with GitHub Actions
+- Managing environment variables and repository secrets across development and production
 
 ---
 
@@ -286,7 +324,7 @@ Potential improvements for future releases include:
 
 ---
 
-## 👤 Author
+## 👩‍💻 Author
 
 **Amira Ben Ameur**
 
@@ -302,3 +340,5 @@ Front-end development portfolio project.
 ## 📄 Disclaimer
 
 Jammming uses the Spotify Web API but is not affiliated with, sponsored by, or endorsed by Spotify.
+
+This project was created for educational and portfolio purposes.
