@@ -35,6 +35,8 @@
   </a>
 </p>
 
+> **Note:** Jammming currently uses the Spotify Web API in Development Mode. The live application is publicly accessible, but Spotify authentication is limited to users who have been added to the application's authorized user list. This restriction is imposed by Spotify and does not affect browsing the deployed interface.
+
 ---
 
 # 📖 Project Overview
@@ -340,5 +342,7 @@ Front-end development portfolio project.
 ## 📄 Disclaimer
 
 Jammming uses the Spotify Web API but is not affiliated with, sponsored by, or endorsed by Spotify.
+
+The application currently operates under Spotify's Development Mode, which restricts Spotify authentication to authorized test users.
 
 This project was created for educational and portfolio purposes.
