@@ -5,7 +5,7 @@ import {
   searchSpotify, 
   createPlaylist, 
   addTracksToPlaylist, 
-} from "./services/spotify.js";
+} from "./services/Spotify.js";
 import Header from "./components/Header/Header";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchResults from "./components/SearchResults/SearchResults";

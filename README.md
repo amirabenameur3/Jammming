@@ -69,12 +69,12 @@ The project evolved from a basic playlist-building application into a more compl
 
 ### Desktop
 
-![Jammming desktop interface](./screenshots/jamming-desktop.png)
+![Jammming desktop interface](./screenshots/jammming-desktop.png)
 
 ### Mobile
 
 <p align="center">
-  <img src="./screenshots/jamming-mobile.png" width="350" alt="Jammming mobile interface">
+  <img src="./screenshots/jammming-mobile.png" width="350" alt="Jammming mobile interface">
 </p>
 
 ---
@@ -132,7 +132,7 @@ When an access token expires, Jammming attempts to refresh it automatically so t
 ## 📁 Project Structure
 
 ```text
-JAMMING/
+JAMMMING/
 │
 ├── public/
 │   ├── favicon.svg
